@@ -336,7 +336,7 @@ export default function HomePage({ loaderData }: Route.ComponentProps) {
           Card
         </Typography>
 
-        <Card>
+        <Card className="min-w-1/3">
           <CardHeader>
             <CardTitle>{loaderData.title}</CardTitle>
             <CardDescription>{loaderData.description}</CardDescription>

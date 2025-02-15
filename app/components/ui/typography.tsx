@@ -41,13 +41,9 @@ function Typography({
   variant,
   size,
   color,
-  asChild = false,
   ...props
-}: React.ComponentProps<'p'> &
-  VariantProps<typeof typographyVariants> & {
-    asChild?: boolean
-  }) {
-  const Comp = asChild ? (variant as React.ElementType) : 'p'
+}: React.ComponentProps<'p'> & VariantProps<typeof typographyVariants>) {
+  const Comp = variant as React.ElementType
 
   return (
     <Comp
