@@ -11,6 +11,8 @@ import {
 import { ThemeProvider } from 'next-themes'
 
 import type { Route } from './+types/root'
+import { ThemeToggle } from '@/components/theme-toggle'
+import { Typography } from '@/components/ui/typography'
 
 // prettier-ignore
 export const links: Route.LinksFunction = () => [
@@ -35,9 +37,10 @@ export function Layout({ children }: Readonly<{ children: React.ReactNode }>) {
         <Meta />
         <Links />
       </head>
-      <body>
+      <body className="font-sans antialiased">
         <ThemeProvider attribute="class" disableTransitionOnChange>
           {children}
+          <ThemeToggle />
         </ThemeProvider>
         <ScrollRestoration />
         <Scripts />
@@ -56,20 +59,18 @@ export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
   let stack: string | undefined
 
   if (isRouteErrorResponse(error)) {
-    message = error.status === 404 ? '404' : 'Error'
+    message = error.status.toString()
     details =
-      error.status === 404
-        ? 'The requested page could not be found.'
-        : error.statusText || details
+      error.status === 404 ? 'This page could not be found.' : error.statusText || details
   } else if (import.meta.env.DEV && error && error instanceof Error) {
     details = error.message
     stack = error.stack
   }
 
   return (
-    <main className="container mx-auto p-4 pt-16">
-      <h1>{message}</h1>
-      <p>{details}</p>
+    <main className="container flex min-h-dvh flex-col items-center justify-center">
+      <Typography variant="h1">{message}</Typography>
+      <Typography>{details}</Typography>
       {stack && (
         <pre className="w-full overflow-x-auto p-4">
           <code>{stack}</code>
