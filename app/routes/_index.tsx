@@ -1,4 +1,11 @@
-import { TerminalIcon } from 'lucide-react'
+import {
+  BellIcon,
+  HelpCircleIcon,
+  LogOutIcon,
+  SettingsIcon,
+  TerminalIcon,
+  UserIcon,
+} from 'lucide-react'
 
 import type { Route } from './+types/_index'
 import {
@@ -23,11 +30,72 @@ import { AspectRatio } from '@/components/ui/aspect-ratio'
 import { Avatar, AvatarFallback, AvatarGroup, AvatarImage } from '@/components/ui/avatar'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card'
+import { Checkbox } from '@/components/ui/checkbox'
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog'
+import {
+  Drawer,
+  DrawerClose,
+  DrawerContent,
+  DrawerDescription,
+  DrawerFooter,
+  DrawerHeader,
+  DrawerTitle,
+  DrawerTrigger,
+} from '@/components/ui/drawer'
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select'
+import {
+  Sheet,
+  SheetClose,
+  SheetContent,
+  SheetDescription,
+  SheetFooter,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from '@/components/ui/sheet'
+import { Switch } from '@/components/ui/switch'
+import { Textarea } from '@/components/ui/textarea'
 import { Typography } from '@/components/ui/typography'
 
 export const loader = (_: Route.LoaderArgs) => {
   return {
     message: 'React router - Shadcn',
+    title: 'Create New Post',
+    description: 'Share your thoughts with the community',
   }
 }
 
@@ -95,7 +163,7 @@ export default function HomePage({ loaderData }: Route.ComponentProps) {
 
         <AlertDialog>
           <AlertDialogTrigger asChild>
-            <Button variant="outline">Dont lick me</Button>
+            <Button variant="outline">Alert Dialog</Button>
           </AlertDialogTrigger>
           <AlertDialogContent>
             <AlertDialogHeader>
@@ -111,6 +179,102 @@ export default function HomePage({ loaderData }: Route.ComponentProps) {
             </AlertDialogFooter>
           </AlertDialogContent>
         </AlertDialog>
+
+        <Dialog>
+          <DialogTrigger>
+            <Button variant="outline">Dialog</Button>
+          </DialogTrigger>
+
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>{loaderData.title}</DialogTitle>
+              <DialogDescription>{loaderData.description}</DialogDescription>
+            </DialogHeader>
+
+            <div className="grid gap-4">
+              <Form id="dialog" />
+            </div>
+
+            <DialogFooter>
+              <DialogClose asChild>
+                <Button variant="outline">Cancel</Button>
+              </DialogClose>
+              <Button>Publish Post</Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
+
+        <Drawer>
+          <DrawerTrigger asChild>
+            <Button variant="outline">Drawer</Button>
+          </DrawerTrigger>
+
+          <DrawerContent>
+            <div className="mx-auto w-full max-w-md">
+              <DrawerHeader>
+                <DrawerTitle>{loaderData.title}</DrawerTitle>
+                <DrawerDescription>{loaderData.description}</DrawerDescription>
+              </DrawerHeader>
+
+              <div className="grid gap-4 p-4">
+                <Form id="drawer" />
+              </div>
+
+              <DrawerFooter>
+                <Button>Publish Post</Button>
+                <DrawerClose asChild>
+                  <Button variant="outline">Cancel</Button>
+                </DrawerClose>
+              </DrawerFooter>
+            </div>
+          </DrawerContent>
+        </Drawer>
+
+        <DropdownMenu>
+          <DropdownMenuTrigger>
+            <Button variant="outline">Dropdown Menu</Button>
+          </DropdownMenuTrigger>
+
+          <DropdownMenuContent>
+            <DropdownMenuLabel>Tiesen</DropdownMenuLabel>
+            <DropdownMenuSeparator />
+            <DropdownMenuGroup>
+              {menuItems.map((i, idx) => (
+                <>
+                  {idx === 3 && <DropdownMenuSeparator />}
+                  <DropdownMenuItem key={i.label}>
+                    <i.icon className="mr-2 size-4" />
+                    {i.label}
+                  </DropdownMenuItem>
+                </>
+              ))}
+            </DropdownMenuGroup>
+          </DropdownMenuContent>
+        </DropdownMenu>
+
+        <Sheet>
+          <SheetTrigger asChild>
+            <Button variant="outline">Sheet</Button>
+          </SheetTrigger>
+
+          <SheetContent>
+            <SheetHeader>
+              <SheetTitle>{loaderData.title}</SheetTitle>
+              <SheetDescription>{loaderData.description}</SheetDescription>
+            </SheetHeader>
+
+            <div className="grid gap-4 px-4">
+              <Form id="sheet" />
+            </div>
+
+            <SheetFooter className="gap-4">
+              <Button>Publish Post</Button>
+              <SheetClose asChild>
+                <Button variant="outline">Cancel</Button>
+              </SheetClose>
+            </SheetFooter>
+          </SheetContent>
+        </Sheet>
       </section>
 
       <section className="my-4 flex flex-wrap items-center gap-4">
@@ -160,12 +324,47 @@ export default function HomePage({ loaderData }: Route.ComponentProps) {
           Button
         </Typography>
 
-        {(
-          ['default', 'secondary', 'outline', 'destructive', 'ghost', 'link'] as const
-        ).map((v) => (
+        {([...variants, 'ghost', 'link'] as const).map((v) => (
           <Button key={v} variant={v}>
-            Lick me
+            {v}
           </Button>
+        ))}
+      </section>
+
+      <section className="my-4 flex flex-wrap items-start gap-4">
+        <Typography variant="h2" className="basis-full">
+          Card
+        </Typography>
+
+        <Card>
+          <CardHeader>
+            <CardTitle>{loaderData.title}</CardTitle>
+            <CardDescription>{loaderData.description}</CardDescription>
+          </CardHeader>
+          <CardContent className="grid gap-4">
+            <Form id="card" />
+          </CardContent>
+          <CardFooter>
+            <Button className="w-full">Publish Post</Button>
+          </CardFooter>
+        </Card>
+
+        {(['default', 'pressable'] as const).map((v) => (
+          <Card key={v} variant={v}>
+            <CardHeader>
+              <CardTitle>Premium Plan</CardTitle>
+              <CardDescription>Get unlimited access to all features</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-2">
+              <p>✓ Unlimited projects</p>
+              <p>✓ Priority support</p>
+              <p>✓ Advanced analytics</p>
+              <p>✓ Custom integrations</p>
+            </CardContent>
+            <CardFooter>
+              <Button className="w-full">Subscribe Now</Button>
+            </CardFooter>
+          </Card>
         ))}
       </section>
     </main>
@@ -181,3 +380,88 @@ const variants = [
   'destructive',
   'outline',
 ] as const
+
+const Form: React.FC<{ id: string }> = ({ id }) => (
+  <>
+    <Label htmlFor={`${id}_title`} className="flex flex-col gap-2">
+      Title
+      <Input
+        id={`${id}_title`}
+        name={`${id}_title`}
+        placeholder="Enter a descriptive title"
+      />
+    </Label>
+
+    <Label htmlFor={`${id}_content`} className="flex flex-col gap-2">
+      Content
+      <Textarea
+        id={`${id}_content`}
+        name={`${id}_content`}
+        placeholder="Write your post content here..."
+        className="min-h-[120px]"
+      />
+    </Label>
+
+    <Label htmlFor={`${id}_category`} className="flex flex-col gap-2">
+      Category
+      <Select name={`${id}_category`}>
+        <SelectTrigger id={`${id}_category`}>
+          <SelectValue placeholder="Select a category" />
+        </SelectTrigger>
+        <SelectContent>
+          {categories.map((c) => (
+            <SelectItem key={c.value} value={c.value}>
+              {c.label}
+            </SelectItem>
+          ))}
+        </SelectContent>
+      </Select>
+    </Label>
+
+    <Label htmlFor={`${id}_public`} className="flex items-center gap-2">
+      <Checkbox id={`${id}_public`} name={`${id}_public`} defaultChecked />
+      <div className="space-y-1">
+        <p className="font-medium">Make public</p>
+        <p className="text-muted-foreground text-sm">
+          This post will be visible to all community members
+        </p>
+      </div>
+    </Label>
+
+    <Label htmlFor={`${id}_notify`} className="flex items-center gap-2">
+      <Checkbox id={`${id}_notify`} name={`${id}_notify`} />
+      <div className="space-y-1">
+        <p className="font-medium">Send notifications</p>
+        <p className="text-muted-foreground text-sm">
+          Notify followers when this post is published
+        </p>
+      </div>
+    </Label>
+
+    <Label htmlFor={`${id}_featured`} className="flex items-center gap-2">
+      <Switch id={`${id}_featured`} name={`${id}_featured`} />
+      <div className="space-y-1">
+        <p className="font-medium">Featured Post</p>
+        <p className="text-muted-foreground text-sm">
+          Show this post at the top of the feed
+        </p>
+      </div>
+    </Label>
+  </>
+)
+
+const categories = [
+  { value: 'development', label: 'Development' },
+  { value: 'design', label: 'Design' },
+  { value: 'marketing', label: 'Marketing' },
+  { value: 'sales', label: 'Sales' },
+  { value: 'support', label: 'Support' },
+]
+
+const menuItems = [
+  { icon: UserIcon, label: 'View Profile' },
+  { icon: SettingsIcon, label: 'Settings' },
+  { icon: BellIcon, label: 'Notifications' },
+  { icon: HelpCircleIcon, label: 'Help & Support' },
+  { icon: LogOutIcon, label: 'Log Out' },
+]
